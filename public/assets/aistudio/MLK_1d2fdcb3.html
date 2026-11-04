@@ -1,0 +1,43 @@
+==========================================================================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Money Leak Detector | Where Does My Money Go?</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div class="app">
+    <aside class="sidebar">
+        <h2>💰 Money Tracker</h2>
+        <nav>
+            <a href="./index.html">🏠 Dashboard</a>
+            <a href="./expence.html">💸 Expenses</a>
+            <a href="./income.html">💰 Income</a>
+            <a href="./analytics.html">📊 Analytics</a>
+            <a href="./money-leak.html" class="active">🔍 Money Leak Detector</a>
+        </nav>
+        <button id="darkModeToggle" class="dark-mode-toggle" type="button">🌙 Dark Mode</button>
+    </aside>
+
+    <main class="main-content">
+        <h1>🔍 Money Leak Detector</h1>
+        <p class="subtitle">Discover your biggest spending categories and find opportunities to save.</p>
+
+        <section class="transactions money-leak-section">
+            <div class="section-heading">
+                <h2>Your Spending Analysis</h2>
+                <p>Your analysis uses the expenses saved in your browser.</p>
+            </div>
+            <div id="moneyLeakSummary" class="money-leak-summary">Analysing your expenses...</div>
+            <div id="moneyLeakResults" class="money-leak-results"></div>
+        </section>
+        <a href="./index.html" class="quick-action-btn">← Back to Dashboard</a>
+    </main>
+</div>
+<script src="./script.js"></script>
+
+</body>
+</html>
+

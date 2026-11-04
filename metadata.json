@@ -1,0 +1,6 @@
+{
+  "name": "Where Does My Money Go?",
+  "description": "Smart personal finance tracker with automated Money Leak Detection, interactive spending analytics, income and expense management, and budget insights.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

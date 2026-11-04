@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Analytics | Where Does My Money Go?</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/chart.js"
+    ></script>
+
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <h2>💰 Money Tracker</h2>
+
+        <nav>
+
+            <a href="./index.html">
+                🏠 Dashboard
+            </a>
+
+            <a href="./expence.html">
+                💸 Expenses
+            </a>
+
+            <a href="./income.html">
+                💰 Income
+            </a>
+
+            <a href="./analytics.html" class="active">
+                📊 Analytics
+            </a>
+
+                    <a href="./money-leak.html">🔍 Money Leak Detector</a>
+        </nav>
+
+        <button
+            id="darkModeToggle"
+            class="dark-mode-toggle"
+            type="button"
+        >
+            🌙 Dark Mode
+        </button>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <h1>Analytics</h1>
+
+        <p class="subtitle">
+            Understand where your money goes and how much you are saving.
+        </p>
+
+
+        <!-- SUMMARY -->
+        <div class="dashboard-cards">
+
+            <div class="dashboard-card income-card">
+
+                <div class="card-icon">
+                    💰
+                </div>
+
+                <div class="card-content">
+
+                    <p>Total Income</p>
+
+                    <h2 id="analyticsIncome">
+                        ₹0.00
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-card expense-card">
+
+                <div class="card-icon">
+                    💸
+                </div>
+
+                <div class="card-content">
+
+                    <p>Total Expenses</p>
+
+                    <h2 id="analyticsExpense">
+                        ₹0.00
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-card balance-card">
+
+                <div class="card-icon">
+                    💵
+                </div>
+
+                <div class="card-content">
+
+                    <p>Total Savings</p>
+
+                    <h2 id="analyticsSavings">
+                        ₹0.00
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-card savings-card">
+
+                <div class="card-icon">
+                    📈
+                </div>
+
+                <div class="card-content">
+
+                    <p>Savings Rate</p>
+
+                    <h2 id="analyticsSavingsRate">
+                        0.0%
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SAVINGS PROGRESS -->
+        <section class="transactions">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>🎯 Savings Progress</h2>
+
+                    <p>
+                        Your current savings compared with your income.
+                    </p>
+                </div>
+
+                <strong id="savingsPercentage">
+                    0.0%
+                </strong>
+
+            </div>
+
+
+            <div class="progress-container">
+
+                <div
+                    id="savingsProgressBar"
+                    class="progress-bar"
+                ></div>
+
+            </div>
+
+
+            <p
+                id="savingsProgressText"
+                class="progress-text"
+            >
+                Add income and expenses to start tracking your savings.
+            </p>
+
+        </section>
+
+
+        <!-- EXPENSE CATEGORY -->
+        <section class="transactions">
+
+            <div class="section-heading">
+
+                <h2>💸 Expenses by Category</h2>
+
+                <p>
+                    See how your spending is distributed.
+                </p>
+
+            </div>
+
+
+            <div class="chart-container">
+
+                <canvas id="expenseCategoryChart"></canvas>
+
+            </div>
+
+        </section>
+
+
+        <!-- INCOME CATEGORY -->
+        <section class="transactions">
+
+            <div class="section-heading">
+
+                <h2>💰 Income by Category</h2>
+
+                <p>
+                    See where your income comes from.
+                </p>
+
+            </div>
+
+
+            <div class="chart-container">
+
+                <canvas id="incomeCategoryChart"></canvas>
+
+            </div>
+
+        </section>
+
+
+        <!-- INCOME VS EXPENSE -->
+        <section class="transactions">
+
+            <div class="section-heading">
+
+                <h2>⚖️ Income vs Expenses</h2>
+
+                <p>
+                    Compare your total income and spending.
+                </p>
+
+            </div>
+
+
+            <div class="large-chart-container">
+
+                <canvas id="incomeExpenseChart"></canvas>
+
+            </div>
+
+        </section>
+
+
+        <!-- MONTHLY TREND -->
+        <section class="transactions">
+
+            <div class="section-heading">
+
+                <h2>📈 Monthly Financial Trend</h2>
+
+                <p>
+                    Track income and expenses over time.
+                </p>
+
+            </div>
+
+
+            <div class="large-chart-container">
+
+                <canvas id="monthlyTrendChart"></canvas>
+
+            </div>
+
+        </section>
+
+
+        <!-- EXPENSE BREAKDOWN -->
+        <section class="transactions">
+
+            <div class="section-heading">
+
+                <h2>📋 Expense Breakdown</h2>
+
+                <p>
+                    Detailed category-wise expenses.
+                </p>
+
+            </div>
+
+
+            <div id="expenseCategoryList" class="breakdown-list"></div>
+
+        </section>
+
+
+        <!-- INCOME BREAKDOWN -->
+        <section class="transactions">
+
+            <div class="section-heading">
+
+                <h2>📋 Income Breakdown</h2>
+
+                <p>
+                    Detailed category-wise income.
+                </p>
+
+            </div>
+
+
+            <div id="incomeCategoryList" class="breakdown-list"></div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="./script.js"></script>
+
+</body>
+</html>
+
+

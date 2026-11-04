@@ -1,0 +1,268 @@
+==========================================================================================
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Expenses | Where Does My Money Go?</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <h2>💰 Money Tracker</h2>
+
+        <nav>
+            <a href="./index.html">🏠 Dashboard</a>
+            <a href="./expence.html" class="active">💸 Expenses</a>
+            <a href="./income.html">💰 Income</a>
+            <a href="./analytics.html">📊 Analytics</a>
+                    <a href="./money-leak.html">🔍 Money Leak Detector</a>
+        </nav>
+
+        <button id="darkModeToggle" class="dark-mode-toggle" type="button">
+            🌙 Dark Mode
+        </button>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <h1>Expenses</h1>
+
+        <p class="subtitle">
+            Record and manage your daily spending.
+        </p>
+
+
+        <!-- TOTAL -->
+        <div class="summary-banner expense-banner">
+
+            <div>
+                <span>Total Expenses</span>
+                <h2 id="totalExpenses">₹0.00</h2>
+            </div>
+
+            <div class="summary-icon">
+                💸
+            </div>
+
+        </div>
+
+
+        <!-- ADD EXPENSE -->
+        <section class="form-container">
+
+            <h2>➕ Add New Expense</h2>
+
+            <form id="expenseForm">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="amount">
+                            Amount
+                        </label>
+
+                        <input
+                            type="number"
+                            id="amount"
+                            min="0.01"
+                            step="0.01"
+                            placeholder="Enter amount"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="category">
+                            Category
+                        </label>
+
+                        <select id="category" required>
+
+                            <option value="">
+                                Select category
+                            </option>
+
+                            <option value="Food">
+                                Food
+                            </option>
+
+                            <option value="Travel">
+                                Travel
+                            </option>
+
+                            <option value="Shopping">
+                                Shopping
+                            </option>
+
+                            <option value="Bills">
+                                Bills
+                            </option>
+
+                            <option value="Education">
+                                Education
+                            </option>
+
+                            <option value="Entertainment">
+                                Entertainment
+                            </option>
+
+                            <option value="Health">
+                                Health
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="date">
+                            Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="date"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="payment">
+                            Payment Method
+                        </label>
+
+                        <select id="payment" required>
+
+                            <option value="">
+                                Select payment method
+                            </option>
+
+                            <option value="UPI">
+                                UPI
+                            </option>
+
+                            <option value="Cash">
+                                Cash
+                            </option>
+
+                            <option value="Card">
+                                Card
+                            </option>
+
+                            <option value="Net Banking">
+                                Net Banking
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group full-width">
+
+                        <label for="description">
+                            Description
+                        </label>
+
+                        <input
+                            type="text"
+                            id="description"
+                            placeholder="What did you spend money on?"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    💸 Add Expense
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- EXPENSE TABLE -->
+        <section class="transactions">
+
+            <div class="section-heading">
+
+                <h2>📋 Expense History</h2>
+
+                <p>
+                    All your recorded expenses.
+                </p>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Date</th>
+                            <th>Payment</th>
+                            <th>Amount</th>
+                            <th>Actions</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="expenseTableBody"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="./script.js"></script>
+
+</body>
+</html>
+

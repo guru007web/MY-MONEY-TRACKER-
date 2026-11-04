@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | Where Does My Money Go?</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <h2>💰 Money Tracker</h2>
+
+        <nav>
+            <a href="./index.html" class="active">🏠 Dashboard</a>
+            <a href="./expence.html">💸 Expenses</a>
+            <a href="./income.html">💰 Income</a>
+            <a href="./analytics.html">📊 Analytics</a>
+            <a href="./money-leak.html">🔍 Money Leak Detector</a>
+        </nav>
+
+        <button id="darkModeToggle" class="dark-mode-toggle" type="button">
+            🌙 Dark Mode
+        </button>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <h1>Dashboard</h1>
+
+        <p class="subtitle">
+            Track your money and understand where it goes.
+        </p>
+
+
+        <!-- SUMMARY CARDS -->
+        <div class="dashboard-cards">
+
+            <div class="dashboard-card income-card">
+                <div class="card-icon">💰</div>
+
+                <div class="card-content">
+                    <p>Total Income</p>
+                    <h2 id="dashboardIncome">₹0.00</h2>
+                </div>
+            </div>
+
+
+            <div class="dashboard-card expense-card">
+                <div class="card-icon">💸</div>
+
+                <div class="card-content">
+                    <p>Total Expenses</p>
+                    <h2 id="dashboardExpenses">₹0.00</h2>
+                </div>
+            </div>
+
+
+            <div class="dashboard-card balance-card">
+                <div class="card-icon">💳</div>
+
+                <div class="card-content">
+                    <p>Current Balance</p>
+                    <h2 id="dashboardBalance">₹0.00</h2>
+                </div>
+            </div>
+
+
+            <div class="dashboard-card savings-card">
+                <div class="card-icon">📈</div>
+
+                <div class="card-content">
+                    <p>Savings Rate</p>
+                    <h2 id="dashboardSavings">0.0%</h2>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- QUICK ACTIONS -->
+        <section class="dashboard-section">
+
+            <div class="section-heading">
+                <h2>⚡ Quick Actions</h2>
+
+                <p>
+                    Manage your money quickly.
+                </p>
+            </div>
+
+
+            <div class="quick-actions">
+
+                <a
+                    href="./expence.html"
+                    class="quick-action-btn"
+                >
+                    💸 Add Expense
+                </a>
+
+
+                <a
+                    href="./income.html"
+                    class="quick-action-btn"
+                >
+                    💰 Add Income
+                </a>
+
+
+                <a
+                    href="./analytics.html"
+                    class="quick-action-btn"
+                >
+                    📊 View Analytics
+                </a>
+
+
+                <a
+                    href="./money-leak.html"
+                    class="quick-action-btn"
+                >
+                    🔍 Money Leak Detector
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- RECENT TRANSACTIONS -->
+        <section class="transactions">
+
+            <div class="section-header">
+
+                <div>
+                    <h2>📋 Recent Transactions</h2>
+
+                    <p>
+                        Your latest income and expenses.
+                    </p>
+                </div>
+
+
+                <a
+                    href="./expence.html"
+                    class="small-action-btn"
+                >
+                    View Expenses
+                </a>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Type</th>
+                            <th>Category</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="recentTransactions"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- DATA MANAGEMENT -->
+        <section class="transactions">
+
+            <div class="section-heading">
+
+                <h2>💾 Data Management</h2>
+
+                <p>
+                    Export, backup or restore your financial data.
+                </p>
+
+            </div>
+
+
+            <div class="data-management-grid">
+
+                <button
+                    type="button"
+                    class="data-card"
+                    onclick="exportExpensesCSV()"
+                >
+                    <span class="data-icon">📤</span>
+
+                    <span>
+                        <strong>Export Expenses</strong>
+                        <small>Download expenses as CSV</small>
+                    </span>
+                </button>
+
+
+                <button
+                    type="button"
+                    class="data-card"
+                    onclick="exportIncomeCSV()"
+                >
+                    <span class="data-icon">📥</span>
+
+                    <span>
+                        <strong>Export Income</strong>
+                        <small>Download income as CSV</small>
+                    </span>
+                </button>
+
+
+                <button
+                    type="button"
+                    class="data-card"
+                    onclick="exportAllCSV()"
+                >
+                    <span class="data-icon">📊</span>
+
+                    <span>
+                        <strong>All Transactions</strong>
+                        <small>Download complete CSV</small>
+                    </span>
+                </button>
+
+
+                <button
+                    type="button"
+                    class="data-card"
+                    onclick="backupData()"
+                >
+                    <span class="data-icon">💾</span>
+
+                    <span>
+                        <strong>Backup Data</strong>
+                        <small>Save complete JSON backup</small>
+                    </span>
+                </button>
+
+
+                <button
+                    type="button"
+                    class="data-card"
+                    onclick="openRestoreFilePicker()"
+                >
+                    <span class="data-icon">🔄</span>
+
+                    <span>
+                        <strong>Restore Backup</strong>
+                        <small>Restore saved JSON data</small>
+                    </span>
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <footer>
+            Where Does My Money Go? © 2026
+        </footer>
+
+    </main>
+
+</div>
+
+
+<script src="./script.js"></script>
+
+</body>
+</html>
