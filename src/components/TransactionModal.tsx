@@ -132,11 +132,11 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
               <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 font-mono tracking-tight">
-                {initialTransaction ? '// EDIT_TRANSACTION' : '// DISPATCH_TRANSACTION'}
+                {initialTransaction ? 'Edit Transaction' : 'Add New Transaction'}
               </h2>
             </div>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              Sync financial telemetry with local ledger
+              Enter details to keep track of your money
             </p>
           </div>
           <button
@@ -166,7 +166,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
               }`}
             >
-              - OUTFLOW DEBIT
+              - Expense (Money Spent)
             </button>
             <button
               type="button"
@@ -177,7 +177,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100'
               }`}
             >
-              + INFLOW CREDIT
+              + Income (Money Earned)
             </button>
           </div>
 
@@ -251,7 +251,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
 
             <div>
               <label className="block text-xs font-mono font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-                TIMESTAMP
+                DATE
               </label>
               <input
                 type="date"
@@ -266,7 +266,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
           {type === 'expense' && (
             <div>
               <label className="block text-xs font-mono font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-                PAYMENT CHANNEL
+                PAYMENT METHOD
               </label>
               <div className="grid grid-cols-4 gap-2">
                 {PAYMENT_METHODS.slice(0, 4).map((pm) => (
@@ -290,11 +290,11 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
           {/* Notes */}
           <div>
             <label className="block text-xs font-mono font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-              METADATA / TAGS
+              NOTES (OPTIONAL)
             </label>
             <input
               type="text"
-              placeholder="e.g., Work trip, Reimbursement pending, Client Dinner"
+              placeholder="e.g., Dinner with family, Monthly groceries, Metro card reload"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               className="w-full px-3.5 py-2 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 text-xs focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500"
@@ -319,7 +319,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({
               }`}
             >
               {initialTransaction ? <Check className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
-              {initialTransaction ? 'SAVE MODIFICATIONS' : type === 'expense' ? 'COMMIT DEBIT' : 'COMMIT CREDIT'}
+              {initialTransaction ? 'Save Changes' : type === 'expense' ? 'Save Expense' : 'Save Income'}
             </button>
           </div>
         </form>

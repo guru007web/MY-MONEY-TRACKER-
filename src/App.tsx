@@ -18,6 +18,8 @@ import {
   loadCurrency,
   saveCurrency,
   getSampleDataset,
+  clearAllStorage,
+  backupData,
 } from './utils/storage';
 import { analyzeMoneyLeaks } from './utils/leakDetector';
 import { Sidebar, ActiveTab } from './components/Sidebar';
@@ -28,7 +30,9 @@ import { AnalyticsView } from './components/AnalyticsView';
 import { MoneyLeakView } from './components/MoneyLeakView';
 import { BudgetsGoalsView } from './components/BudgetsGoalsView';
 import { TransactionModal } from './components/TransactionModal';
-import { Menu, Plus, CheckCircle2, Radio, Activity } from 'lucide-react';
+import { DownloadSheetModal } from './components/DownloadSheetModal';
+import { DeleteAllDataModal } from './components/DeleteAllDataModal';
+import { Menu, Plus, CheckCircle2, Radio, Activity, FileSpreadsheet } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
@@ -42,6 +46,8 @@ export default function App() {
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isDownloadModalOpen, setIsDownloadModalOpen] = useState<boolean>(false);
+  const [isDeleteAllModalOpen, setIsDeleteAllModalOpen] = useState<boolean>(false);
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
   const [defaultModalType, setDefaultModalType] = useState<'expense' | 'income'>('expense');
 
@@ -75,17 +81,9 @@ export default function App() {
       initialDark = true;
     }
 
-    if (loadedExp.length === 0 && loadedInc.length === 0) {
-      const sample = getSampleDataset();
-      setExpenses(sample.expenses);
-      setIncome(sample.income);
-      saveExpenses(sample.expenses);
-      saveIncomes(sample.income);
-    } else {
-      setExpenses(loadedExp);
-      setIncome(loadedInc);
-    }
-
+    // By default show empty data (no auto-seeding of demo data)
+    setExpenses(loadedExp);
+    setIncome(loadedInc);
     setBudgets(loadedBgt);
     setGoals(loadedGls);
     setCurrencyState(loadedCur);
@@ -99,6 +97,16 @@ export default function App() {
       document.body.classList.remove('dark-mode');
     }
   }, []);
+
+  // Delete All Data (Wipe local storage and state)
+  const handleDeleteAllData = () => {
+    clearAllStorage();
+    setExpenses([]);
+    setIncome([]);
+    setBudgets([]);
+    setGoals([]);
+    showToast('All data deleted. Everything is reset to zero.');
+  };
 
   // 2. Sync Dark Mode
   const handleToggleDarkMode = (val: boolean) => {
@@ -121,7 +129,7 @@ export default function App() {
   const handleSetCurrency = (cur: CurrencyCode) => {
     setCurrencyState(cur);
     saveCurrency(cur);
-    showToast(`Currency unit switched to ${cur}`);
+    showToast(`Currency changed to ${cur}`);
   };
 
   // 4. Save updates
@@ -131,10 +139,10 @@ export default function App() {
       let updated: Transaction[];
       if (exists) {
         updated = expenses.map((e) => (e.id === transaction.id ? transaction : e));
-        showToast('Debit transaction updated');
+        showToast('Expense updated!');
       } else {
         updated = [transaction, ...expenses];
-        showToast('Expense debit recorded');
+        showToast('Expense added!');
       }
       setExpenses(updated);
       saveExpenses(updated);
@@ -143,10 +151,10 @@ export default function App() {
       let updated: Transaction[];
       if (exists) {
         updated = income.map((i) => (i.id === transaction.id ? transaction : i));
-        showToast('Credit transaction updated');
+        showToast('Income updated!');
       } else {
         updated = [transaction, ...income];
-        showToast('Income credit recorded');
+        showToast('Income added!');
       }
       setIncome(updated);
       saveIncomes(updated);
@@ -154,18 +162,18 @@ export default function App() {
   };
 
   const handleDeleteTransaction = (id: string, type: 'expense' | 'income') => {
-    if (!confirm('Are you sure you want to remove this ledger entry?')) return;
+    if (!confirm('Are you sure you want to delete this transaction?')) return;
 
     if (type === 'expense') {
       const updated = expenses.filter((e) => e.id !== id);
       setExpenses(updated);
       saveExpenses(updated);
-      showToast('Debit entry removed');
+      showToast('Expense deleted');
     } else {
       const updated = income.filter((i) => i.id !== id);
       setIncome(updated);
       saveIncomes(updated);
-      showToast('Credit entry removed');
+      showToast('Income deleted');
     }
   };
 
@@ -185,7 +193,7 @@ export default function App() {
   const handleLoadSample = () => {
     if (
       expenses.length > 0 &&
-      !confirm('Loading demo telemetry will merge realistic transactions. Proceed?')
+      !confirm('Load sample demo data? This will add realistic example expenses and income to try out.')
     ) {
       return;
     }
@@ -196,7 +204,7 @@ export default function App() {
     setIncome(newIncome);
     saveExpenses(newExpenses);
     saveIncomes(newIncome);
-    showToast('Telemetry demo data loaded!');
+    showToast('Sample demo data loaded!');
   };
 
   // JSON Restore
@@ -280,6 +288,8 @@ export default function App() {
         onLoadSampleData={handleLoadSample}
         isMobileOpen={isMobileOpen}
         setIsMobileOpen={setIsMobileOpen}
+        onOpenDownloadSheet={() => setIsDownloadModalOpen(true)}
+        onOpenDeleteAllModal={() => setIsDeleteAllModalOpen(true)}
       />
 
       {/* Main Content Area */}
@@ -300,20 +310,33 @@ export default function App() {
               </span>
               <span className="hidden sm:inline text-slate-600" aria-hidden="true">/</span>
               <span className="text-cyan-600 dark:text-cyan-400 font-semibold uppercase tracking-wider">
-                {activeTab === 'leaks' ? 'LEAK RADAR HUD' : activeTab.toUpperCase()}
+                {activeTab === 'leaks' ? 'MONEY LEAK DETECTOR' : activeTab === 'budgets' ? 'BUDGETS & GOALS' : activeTab.toUpperCase()}
               </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            {/* Quick Download Excel Button (Offline Ready) */}
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => setIsDownloadModalOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-2 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-300 border border-emerald-500/30 rounded-xl text-xs font-semibold shadow-xs transition-all"
+              title="Download Excel spreadsheet to your device (works offline)"
+            >
+              <FileSpreadsheet className="w-4 h-4 text-emerald-500 shrink-0" />
+              <span className="hidden sm:inline">Download Excel</span>
+              <span className="sm:hidden">Excel</span>
+            </motion.button>
+
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => handleOpenAdd('expense')}
-              className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white rounded-xl text-xs font-mono font-bold shadow-md glow-cyan transition-all"
+              className="flex items-center gap-1.5 px-3.5 sm:px-4 py-2 bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white rounded-xl text-xs font-mono font-bold shadow-md glow-cyan transition-all"
             >
               <Plus className="w-4 h-4" />
-              <span className="whitespace-nowrap">+ LOG TRANSACTION</span>
+              <span className="whitespace-nowrap">+ Add Transaction</span>
             </motion.button>
           </div>
         </header>
@@ -340,6 +363,8 @@ export default function App() {
                   onDeleteTransaction={handleDeleteTransaction}
                   topLeak={topLeak}
                   onRestoreClick={() => fileInputRef.current?.click()}
+                  onOpenDownloadSheet={() => setIsDownloadModalOpen(true)}
+                  onOpenDeleteAllModal={() => setIsDeleteAllModalOpen(true)}
                 />
               )}
 
@@ -401,11 +426,10 @@ export default function App() {
           </AnimatePresence>
         </main>
 
-        {/* Futuristic Minimal Footer */}
+        {/* Friendly Minimal Footer */}
         <footer className="mt-auto border-t border-slate-200/80 dark:border-slate-800/80 py-6 px-4 text-center text-xs font-mono text-slate-400 dark:text-slate-500">
-          <span>MONEY RADAR v2.4 // </span>
-          <span className="text-cyan-500">QUANTUM FINANCE HUD</span>
-          <span> // ALL DATA ENCRYPTED LOCALLY</span>
+          <span>Where Does My Money Go? — </span>
+          <span className="text-cyan-500">100% Private &amp; Stored on Your Device</span>
         </footer>
       </div>
 
@@ -417,6 +441,29 @@ export default function App() {
         initialTransaction={editingTransaction}
         defaultType={defaultModalType}
         currency={currency}
+      />
+
+      {/* Offline Excel Spreadsheet Download Modal */}
+      <DownloadSheetModal
+        isOpen={isDownloadModalOpen}
+        onClose={() => setIsDownloadModalOpen(false)}
+        expenses={expenses}
+        income={income}
+        budgets={budgets}
+        currency={currency}
+        onDownloaded={(msg) => showToast(msg)}
+      />
+
+      {/* Delete All Data Safe Confirmation Modal */}
+      <DeleteAllDataModal
+        isOpen={isDeleteAllModalOpen}
+        onClose={() => setIsDeleteAllModalOpen(false)}
+        onConfirmDelete={handleDeleteAllData}
+        expensesCount={expenses.length}
+        incomeCount={income.length}
+        budgetsCount={budgets.length}
+        goalsCount={goals.length}
+        onDownloadBackup={() => backupData(expenses, income, budgets, goals)}
       />
     </div>
   );

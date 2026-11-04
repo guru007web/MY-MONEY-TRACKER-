@@ -11,8 +11,8 @@ import {
   Moon,
   Coins,
   Sparkles,
-  Radio,
-  Cpu,
+  FileSpreadsheet,
+  Trash2,
 } from 'lucide-react';
 import { CurrencyCode } from '../types/finance';
 import { CURRENCIES } from '../utils/storage';
@@ -30,6 +30,8 @@ interface SidebarProps {
   onLoadSampleData: () => void;
   isMobileOpen: boolean;
   setIsMobileOpen: (val: boolean) => void;
+  onOpenDownloadSheet?: () => void;
+  onOpenDeleteAllModal?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -43,33 +45,35 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onLoadSampleData,
   isMobileOpen,
   setIsMobileOpen,
+  onOpenDownloadSheet,
+  onOpenDeleteAllModal,
 }) => {
   const navItems: { id: ActiveTab; label: string; icon: React.ReactNode; badge?: string }[] = [
     {
       id: 'dashboard',
-      label: 'Cockpit Dashboard',
+      label: 'Home Dashboard',
       icon: <LayoutDashboard className="w-4 h-4 shrink-0" />,
     },
     {
       id: 'expenses',
-      label: 'Expense Ledger',
+      label: 'Expenses',
       icon: <ArrowDownCircle className="w-4 h-4 shrink-0 text-rose-400" />,
     },
     {
       id: 'income',
-      label: 'Income Credits',
+      label: 'Income',
       icon: <ArrowUpCircle className="w-4 h-4 shrink-0 text-emerald-400" />,
     },
     {
       id: 'analytics',
-      label: 'Spectral Analytics',
+      label: 'Charts & Analytics',
       icon: <PieChart className="w-4 h-4 shrink-0 text-cyan-400" />,
     },
     {
       id: 'leaks',
       label: 'Money Leak Detector',
       icon: <SearchCheck className="w-4 h-4 shrink-0 text-amber-400" />,
-      badge: 'Radar',
+      badge: 'Find Leaks',
     },
     {
       id: 'budgets',
@@ -100,41 +104,38 @@ export const Sidebar: React.FC<SidebarProps> = ({
         }`}
       >
         <div className="flex flex-col flex-1 min-h-0">
-          {/* Futuristic Brand Header */}
+          {/* Brand Header */}
           <div className="flex items-center gap-3 px-2 py-3 mb-3 border-b border-slate-800/80 pb-4">
-            <div className="relative w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 via-indigo-600 to-indigo-500 flex items-center justify-center text-xl shadow-lg glow-cyan shrink-0 border border-cyan-400/40">
-              <span className="text-white text-base font-black font-mono">₹/</span>
+            <div className="relative w-10 h-10 rounded-2xl bg-gradient-to-tr from-cyan-600 via-indigo-600 to-indigo-500 flex items-center justify-center text-xl shadow-lg shrink-0 border border-cyan-400/30">
+              <span>💰</span>
             </div>
             <div className="min-w-0">
-              <div className="flex items-center gap-1.5">
-                <h1 className="text-sm font-extrabold text-white tracking-tight truncate font-mono">
-                  MONEY RADAR
-                </h1>
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-              </div>
-              <p className="text-[10px] font-mono text-slate-400 uppercase tracking-widest truncate">
-                AI LEAK DETECTOR
+              <h1 className="text-sm font-bold text-white tracking-tight truncate">
+                Where Does My Money Go?
+              </h1>
+              <p className="text-[11px] text-slate-400 truncate">
+                Simple Money Tracker
               </p>
             </div>
           </div>
 
-          {/* Quick Action Buttons with futuristic glow */}
+          {/* Quick Action Buttons */}
           <div className="grid grid-cols-2 gap-2 mb-5 px-1">
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={() => onOpenQuickAdd('expense')}
-              className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 hover:bg-rose-500 hover:text-white text-xs font-semibold font-mono transition-all"
+              className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 hover:bg-rose-500 hover:text-white text-xs font-semibold transition-all"
             >
-              <ArrowDownCircle className="w-3.5 h-3.5" />
-              <span>- Debit</span>
+              <ArrowDownCircle className="w-3.5 h-3.5 text-rose-400" />
+              <span>Add Expense</span>
             </motion.button>
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={() => onOpenQuickAdd('income')}
-              className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500 hover:text-white text-xs font-semibold font-mono transition-all"
+              className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-500 hover:text-white text-xs font-semibold transition-all"
             >
-              <ArrowUpCircle className="w-3.5 h-3.5" />
-              <span>+ Credit</span>
+              <ArrowUpCircle className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Add Income</span>
             </motion.button>
           </div>
 
@@ -150,7 +151,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   onClick={() => handleNavClick(item.id)}
                   className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all text-left relative group ${
                     isActive
-                      ? 'bg-gradient-to-r from-cyan-950/80 to-slate-900 text-cyan-300 border border-cyan-500/40 glow-cyan shadow-sm font-semibold'
+                      ? 'bg-gradient-to-r from-cyan-950/80 to-slate-900 text-cyan-300 border border-cyan-500/40 shadow-sm font-semibold'
                       : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900 border border-transparent'
                   }`}
                 >
@@ -160,10 +161,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   </div>
                   {item.badge && (
                     <span
-                      className={`text-[9px] px-1.5 py-0.5 rounded font-mono uppercase tracking-widest ${
+                      className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
                         isActive
                           ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/50'
-                          : 'bg-amber-500/15 text-amber-400 border border-amber-500/30'
+                          : 'bg-amber-500/15 text-amber-300 border border-amber-500/30'
                       }`}
                     >
                       {item.badge}
@@ -181,10 +182,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* Sidebar Footer Controls */}
         <div className="pt-3 border-t border-slate-800/80 space-y-2 mt-auto shrink-0">
           {/* Currency Switcher */}
-          <div className="flex items-center justify-between px-3 py-1.5 bg-slate-900/80 border border-slate-800 rounded-xl text-xs font-mono">
+          <div className="flex items-center justify-between px-3 py-1.5 bg-slate-900/80 border border-slate-800 rounded-xl text-xs">
             <div className="flex items-center gap-2 text-slate-400">
               <Coins className="w-3.5 h-3.5 text-cyan-400" />
-              <span>Unit</span>
+              <span>Currency</span>
             </div>
             <select
               value={currency}
@@ -202,26 +203,58 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {/* Dark Mode Toggle */}
           <button
             onClick={() => setDarkMode(!darkMode)}
-            className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-slate-900/60 hover:bg-slate-900 border border-slate-800 text-slate-300 text-xs font-medium transition-colors font-mono"
+            className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-slate-900/60 hover:bg-slate-900 border border-slate-800 text-slate-300 text-xs font-medium transition-colors"
           >
             <div className="flex items-center gap-2">
               {darkMode ? <Sun className="w-3.5 h-3.5 text-amber-400" /> : <Moon className="w-3.5 h-3.5 text-cyan-400" />}
-              <span>{darkMode ? 'Solar Mode' : 'Cyber Dark'}</span>
+              <span>{darkMode ? 'Light Mode' : 'Dark Mode'}</span>
             </div>
-            <span className="text-[10px] text-slate-500">
+            <span className="text-xs text-slate-400">
               {darkMode ? '☀️' : '🌙'}
             </span>
           </button>
 
+          {/* Download Excel Sheet Action */}
+          {onOpenDownloadSheet && (
+            <button
+              onClick={onOpenDownloadSheet}
+              title="Download Excel spreadsheet to your device (works offline)"
+              className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-emerald-950/40 hover:bg-emerald-900/50 border border-emerald-700/50 text-emerald-300 text-xs font-semibold transition-colors shadow-xs"
+            >
+              <div className="flex items-center gap-2">
+                <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Download Excel Sheet</span>
+              </div>
+              <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                .XLSX
+              </span>
+            </button>
+          )}
+
           {/* Sample Demo Data Button */}
           <button
             onClick={onLoadSampleData}
-            title="Load demo transactions to test charts and leak detector"
-            className="w-full flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-xl bg-indigo-950/30 hover:bg-indigo-900/40 text-indigo-300 border border-indigo-800/40 text-[11px] font-mono transition-colors"
+            title="Load sample transactions to try out the app"
+            className="w-full flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-xl bg-indigo-950/30 hover:bg-indigo-900/40 text-indigo-300 border border-indigo-800/40 text-xs transition-colors"
           >
-            <Sparkles className="w-3 h-3 text-cyan-400" />
-            <span>Load Demo Data</span>
+            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+            <span>Load Sample Data</span>
           </button>
+
+          {/* Delete All Data Button */}
+          {onOpenDeleteAllModal && (
+            <button
+              onClick={onOpenDeleteAllModal}
+              title="Delete all data permanently and start completely fresh"
+              className="w-full flex items-center justify-between px-3 py-1.5 rounded-xl bg-rose-950/20 hover:bg-rose-900/40 border border-rose-900/40 text-rose-400 text-xs transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                <Trash2 className="w-3.5 h-3.5 text-rose-400" />
+                <span>Delete All Data</span>
+              </div>
+              <span className="text-[10px] text-rose-400/80 font-mono">Reset</span>
+            </button>
+          )}
         </div>
       </aside>
     </>

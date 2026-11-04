@@ -15,7 +15,6 @@ import {
   ArrowUpCircle,
   Percent,
   CheckCircle,
-  Activity,
   Layers,
   Sparkles,
 } from 'lucide-react';
@@ -117,97 +116,91 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800/80 pb-4">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] font-mono uppercase tracking-widest text-cyan-400 font-bold px-2.5 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/20">
-              SPECTRAL RADAR TELEMETRY
-            </span>
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight mt-1">
-            Financial Spectral Analytics
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+            Charts & Analytics
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
-            Macro breakdown of category distribution, temporal cash trends, and capital retention ratios.
+            Clear visual charts of where your money comes from, where it goes, and how your savings grow over time.
           </p>
         </div>
       </div>
 
-      {/* 4 Summary Hologram Cards */}
+      {/* 4 Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400">TOTAL INFLOW</span>
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Total Income</span>
             <span className="text-lg">💰</span>
           </div>
           <div className="mt-3">
-            <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100 tabular-nums font-mono">
+            <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100 tabular-nums">
               {formatCurrency(totalIncome, currency)}
             </h2>
-            <p className="text-[11px] text-slate-400 mt-0.5 font-mono">{income.length} events logged</p>
+            <p className="text-[11px] text-slate-400 mt-0.5">{income.length} income entries</p>
           </div>
         </div>
 
         <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400">TOTAL OUTFLOW</span>
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Total Expenses</span>
             <span className="text-lg">💸</span>
           </div>
           <div className="mt-3">
-            <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100 tabular-nums font-mono">
+            <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100 tabular-nums">
               {formatCurrency(totalExpenses, currency)}
             </h2>
-            <p className="text-[11px] text-slate-400 mt-0.5 font-mono">{expenses.length} events logged</p>
+            <p className="text-[11px] text-slate-400 mt-0.5">{expenses.length} expenses</p>
           </div>
         </div>
 
         <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400">NET CAPITAL SURPLUS</span>
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Money Left (Savings)</span>
             <span className="text-lg">💵</span>
           </div>
           <div className="mt-3">
             <h2
-              className={`text-2xl font-black tabular-nums font-mono ${
+              className={`text-2xl font-black tabular-nums ${
                 totalSavings >= 0 ? 'text-cyan-500' : 'text-rose-500'
               }`}
             >
               {formatCurrency(totalSavings, currency)}
             </h2>
-            <p className="text-[11px] text-slate-400 mt-0.5 font-mono">
-              {totalSavings >= 0 ? 'Surplus retained' : 'Deficit burn'}
+            <p className="text-[11px] text-slate-400 mt-0.5">
+              {totalSavings >= 0 ? 'Saved in pocket' : 'Spent more than earned'}
             </p>
           </div>
         </div>
 
         <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400">RETENTION RATE</span>
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Savings Rate</span>
             <span className="text-lg">📈</span>
           </div>
           <div className="mt-3">
-            <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100 tabular-nums font-mono">
+            <h2 className="text-2xl font-black text-slate-900 dark:text-slate-100 tabular-nums">
               {savingsRate.toFixed(1)}%
             </h2>
-            <p className="text-[11px] text-slate-400 mt-0.5 font-mono">
-              {savingsRate >= 20 ? 'Optimal (Rule of 20%)' : 'Sub-optimal'}
+            <p className="text-[11px] text-slate-400 mt-0.5">
+              {savingsRate >= 20 ? 'Great job! Saving 20%+' : 'Aim for 20% savings'}
             </p>
           </div>
         </div>
       </div>
 
-      {/* Futuristic Savings Progress Bar */}
+      {/* Savings Progress Bar */}
       <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 space-y-3 shadow-xs">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-              <Activity className="w-5 h-5 text-cyan-500" />
-              <span>Capital Retention Telemetry</span>
+              <span>🎯 Your Savings Progress</span>
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Retained savings compared with total earned income
+              How much of your earned money you managed to keep
             </p>
           </div>
-          <span className="text-base font-bold text-cyan-500 font-mono tabular-nums">
-            {savingsRate.toFixed(1)}%
+          <span className="text-base font-bold text-cyan-500 tabular-nums">
+            {savingsRate.toFixed(1)}% Saved
           </span>
         </div>
 
@@ -216,16 +209,16 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
             initial={{ width: 0 }}
             animate={{ width: `${Math.min(100, Math.max(0, savingsRate))}%` }}
             transition={{ duration: 0.8 }}
-            className="h-full bg-gradient-to-r from-cyan-500 to-indigo-500 rounded-full glow-cyan"
+            className="h-full bg-gradient-to-r from-cyan-500 to-indigo-500 rounded-full"
           />
         </div>
 
-        <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+        <p className="text-xs text-slate-500 dark:text-slate-400">
           {totalIncome === 0
-            ? 'Awaiting transaction data stream...'
+            ? 'Add income and expenses to track your savings progress.'
             : totalSavings > 0
-            ? `+ ${formatCurrency(totalSavings, currency)} retained of ${formatCurrency(totalIncome, currency)} total volume.`
-            : `- Outflow exceeds inflow by ${formatCurrency(Math.abs(totalSavings), currency)}.`}
+            ? `You have saved ${formatCurrency(totalSavings, currency)} out of ${formatCurrency(totalIncome, currency)} total earned.`
+            : `Your expenses were ${formatCurrency(Math.abs(totalSavings), currency)} higher than your income.`}
         </p>
       </div>
 
@@ -235,10 +228,10 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
           <div>
             <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <PieChart className="w-5 h-5 text-rose-500" />
-              <span>Expenditure Category Distribution</span>
+              <span>Expenses by Category</span>
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Where capital is dispersed across sectors
+              See what percentage of your spending goes to each category
             </p>
           </div>
           <DonutChart
@@ -251,10 +244,10 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
           <div>
             <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <PieChart className="w-5 h-5 text-emerald-500" />
-              <span>Inflow Origin Distribution</span>
+              <span>Income Sources</span>
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Originating channels feeding your liquid reserve
+              Where your money comes from (Salary, Freelance, Gifts, etc.)
             </p>
           </div>
           <DonutChart
@@ -269,10 +262,10 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         <div>
           <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
             <BarChart3 className="w-5 h-5 text-cyan-500" />
-            <span>Temporal Inflow vs Outflow Comparison</span>
+            <span>Income vs Expenses (Month by Month)</span>
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            Month-by-month cashflow volume differential
+            Compare how much you earned vs spent in each month
           </p>
         </div>
         <BarChart data={monthlyBarData} currency={currency} />
@@ -283,10 +276,10 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         <div>
           <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
             <TrendingUp className="w-5 h-5 text-indigo-500" />
-            <span>Cumulative Capital Trajectory</span>
+            <span>Monthly Financial Trend</span>
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            Trajectory of earnings, expenditure, and net accumulation
+            Track how your earnings, spending, and savings change over time
           </p>
         </div>
         <TrendChart data={trendData} currency={currency} />
@@ -297,16 +290,16 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 space-y-4 shadow-xs">
           <div>
             <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">
-              Sector Expense Breakdown
+              Expense Breakdown by Category
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">
-              Categorized outflow with percentage weight
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              Detailed list of spending with percentages
             </p>
           </div>
 
           <div className="space-y-3">
             {expenseCategoryList.length === 0 ? (
-              <p className="text-xs text-slate-400 py-4 text-center font-mono">No data logged.</p>
+              <p className="text-xs text-slate-400 py-4 text-center">No expense records logged yet.</p>
             ) : (
               expenseCategoryList.map((item) => (
                 <div
@@ -318,11 +311,11 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                       <span className="font-semibold text-slate-900 dark:text-slate-100">
                         {item.category}
                       </span>
-                      <span className="text-slate-400 text-[11px] ml-2 font-mono">
+                      <span className="text-slate-400 text-[11px] ml-2">
                         {item.count} items ({item.percentage.toFixed(1)}%)
                       </span>
                     </div>
-                    <span className="font-bold text-rose-600 dark:text-rose-400 tabular-nums font-mono">
+                    <span className="font-bold text-rose-600 dark:text-rose-400 tabular-nums">
                       {formatCurrency(item.amount, currency)}
                     </span>
                   </div>
@@ -341,16 +334,16 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
         <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 space-y-4 shadow-xs">
           <div>
             <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">
-              Sector Inflow Breakdown
+              Income Breakdown by Source
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">
-              Categorized inflow with percentage weight
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              Detailed list of earnings with percentages
             </p>
           </div>
 
           <div className="space-y-3">
             {incomeCategoryList.length === 0 ? (
-              <p className="text-xs text-slate-400 py-4 text-center font-mono">No data logged.</p>
+              <p className="text-xs text-slate-400 py-4 text-center">No income records logged yet.</p>
             ) : (
               incomeCategoryList.map((item) => (
                 <div
@@ -362,11 +355,11 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({
                       <span className="font-semibold text-slate-900 dark:text-slate-100">
                         {item.category}
                       </span>
-                      <span className="text-slate-400 text-[11px] ml-2 font-mono">
+                      <span className="text-slate-400 text-[11px] ml-2">
                         {item.count} items ({item.percentage.toFixed(1)}%)
                       </span>
                     </div>
-                    <span className="font-bold text-emerald-600 dark:text-emerald-400 tabular-nums font-mono">
+                    <span className="font-bold text-emerald-600 dark:text-emerald-400 tabular-nums">
                       {formatCurrency(item.amount, currency)}
                     </span>
                   </div>

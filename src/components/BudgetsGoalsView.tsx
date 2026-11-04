@@ -144,14 +144,14 @@ export const BudgetsGoalsView: React.FC<BudgetsGoalsViewProps> = ({
         <div>
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-mono uppercase tracking-widest text-indigo-400 font-bold px-2.5 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20">
-              TARGET PROTOCOL // CEILINGS & MILESTONES
+              MONTHLY LIMITS & GOALS
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight mt-1">
-            Budget Envelopes & Target Goals
+            Monthly Budgets & Savings Goals
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
-            Hard spending ceilings to suppress leaks and autonomous capital milestone accumulators.
+            Set monthly spending limits for each category and track your savings goals easily.
           </p>
         </div>
       </div>
@@ -162,14 +162,14 @@ export const BudgetsGoalsView: React.FC<BudgetsGoalsViewProps> = ({
           <div>
             <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <ShieldCheck className="w-5 h-5 text-cyan-500" />
-              <span>Active Monthly Spending Caps (Current Cycle)</span>
+              <span>Monthly Category Spending Limits</span>
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">
-              Live consumption against allocated envelope ceilings
+              Track your spending this month against limits you set
             </p>
           </div>
           <span className="text-xs font-mono text-cyan-400 bg-cyan-950/40 border border-cyan-800/50 px-3 py-1 rounded-xl">
-            CYCLE: {new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase()}
+            MONTH: {new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toUpperCase()}
           </span>
         </div>
 
@@ -203,15 +203,15 @@ export const BudgetsGoalsView: React.FC<BudgetsGoalsViewProps> = ({
                   </span>
                   {isOverBudget ? (
                     <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-rose-100 dark:bg-rose-900 text-rose-700 dark:text-rose-300 flex items-center gap-1 border border-rose-500/30">
-                      <AlertTriangle className="w-3 h-3" /> EXCEEDED
+                      <AlertTriangle className="w-3 h-3" /> OVER BUDGET
                     </span>
                   ) : isWarning ? (
                     <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-300 border border-amber-500/30">
-                      80% CONSUMED
+                      80% SPENT
                     </span>
                   ) : (
                     <span className="text-[10px] font-mono text-slate-400">
-                      {limit > 0 ? `${percentage.toFixed(0)}% consumed` : 'No cap defined'}
+                      {limit > 0 ? `${percentage.toFixed(0)}% spent` : 'No limit set'}
                     </span>
                   )}
                 </div>
@@ -235,7 +235,7 @@ export const BudgetsGoalsView: React.FC<BudgetsGoalsViewProps> = ({
                 {/* Spent vs Limit numbers */}
                 <div className="flex items-center justify-between text-xs pt-1 border-t border-slate-200/50 dark:border-slate-700/50 font-mono">
                   <div className="tabular-nums">
-                    <span className="text-slate-500 dark:text-slate-400 text-[11px]">Consumed: </span>
+                    <span className="text-slate-500 dark:text-slate-400 text-[11px]">Spent: </span>
                     <span className="font-semibold text-slate-800 dark:text-slate-200">
                       {formatCurrency(spent, currency)}
                     </span>
@@ -262,12 +262,12 @@ export const BudgetsGoalsView: React.FC<BudgetsGoalsViewProps> = ({
                   ) : (
                     <div className="flex items-center gap-2">
                       <span className="text-slate-500 dark:text-slate-400 text-[11px]">
-                        Cap: {limit > 0 ? formatCurrency(limit, currency) : 'None'}
+                        Limit: {limit > 0 ? formatCurrency(limit, currency) : 'None'}
                       </span>
                       <button
                         onClick={() => handleEditBudget(cat, limit)}
                         className="p-1 text-slate-400 hover:text-cyan-400 transition-colors"
-                        title="Set or update budget cap"
+                        title="Set or update budget limit"
                       >
                         <Edit2 className="w-3.5 h-3.5" />
                       </button>
@@ -286,10 +286,10 @@ export const BudgetsGoalsView: React.FC<BudgetsGoalsViewProps> = ({
           <div>
             <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <Target className="w-5 h-5 text-emerald-500" />
-              <span>Target Savings Accumulators</span>
+              <span>Savings Goals</span>
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">
-              Autonomous capital milestones for emergency backup, travel, and investments
+              Save up for emergencies, gifts, vacations, or new gadgets step by step
             </p>
           </div>
           <motion.button
@@ -298,14 +298,14 @@ export const BudgetsGoalsView: React.FC<BudgetsGoalsViewProps> = ({
             className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white text-xs font-mono font-bold shadow-md glow-emerald transition-all shrink-0"
           >
             <Plus className="w-4 h-4" />
-            <span>+ INITIALIZE GOAL</span>
+            <span>+ New Savings Goal</span>
           </motion.button>
         </div>
 
         {goals.length === 0 ? (
           <div className="p-8 text-center text-slate-400 dark:text-slate-500">
             <Coins className="w-10 h-10 mx-auto mb-2 opacity-50" />
-            <p className="text-sm font-mono">No target goals initialized yet. Click above to define your first milestone!</p>
+            <p className="text-sm font-mono">No savings goals added yet. Click above to create your first goal!</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -337,10 +337,10 @@ export const BudgetsGoalsView: React.FC<BudgetsGoalsViewProps> = ({
                     <div className="space-y-1.5">
                       <div className="flex items-center justify-between text-xs font-mono">
                         <span className="font-semibold text-emerald-500">
-                          {pct}% REACHED
+                          {pct}% SAVED
                         </span>
                         <span className="text-slate-400 text-[11px]">
-                          TARGET: {formatCurrency(goal.targetAmount, currency)}
+                          GOAL: {formatCurrency(goal.targetAmount, currency)}
                         </span>
                       </div>
                       <div className="w-full h-2.5 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden p-0.5">
@@ -354,7 +354,7 @@ export const BudgetsGoalsView: React.FC<BudgetsGoalsViewProps> = ({
                     </div>
 
                     <div className="flex items-center justify-between text-xs pt-1 tabular-nums font-mono">
-                      <span className="text-slate-500 dark:text-slate-400">Accumulated:</span>
+                      <span className="text-slate-500 dark:text-slate-400">Saved so far:</span>
                       <span className="font-bold text-slate-900 dark:text-slate-100">
                         {formatCurrency(goal.currentAmount, currency)}
                       </span>
@@ -362,11 +362,11 @@ export const BudgetsGoalsView: React.FC<BudgetsGoalsViewProps> = ({
 
                     {remaining > 0 ? (
                       <p className="text-[11px] text-slate-500 dark:text-slate-400 font-mono">
-                        {formatCurrency(remaining, currency)} remaining to complete.
+                        {formatCurrency(remaining, currency)} left to reach your goal.
                       </p>
                     ) : (
                       <p className="text-[11px] font-bold text-emerald-500 flex items-center gap-1 font-mono">
-                        <CheckCircle2 className="w-3.5 h-3.5" /> TARGET ACHIEVED! 🚀
+                        <CheckCircle2 className="w-3.5 h-3.5" /> GOAL REACHED! 🎉
                       </p>
                     )}
                   </div>
@@ -378,7 +378,7 @@ export const BudgetsGoalsView: React.FC<BudgetsGoalsViewProps> = ({
                     className="w-full py-2 px-3 rounded-xl bg-cyan-500/10 dark:bg-cyan-950/40 text-cyan-600 dark:text-cyan-300 border border-cyan-500/30 hover:bg-cyan-500/20 text-xs font-mono font-semibold flex items-center justify-center gap-1.5 transition-colors"
                   >
                     <Plus className="w-3.5 h-3.5" />
-                    <span>+ Deposit Capital</span>
+                    <span>+ Add Money to Goal</span>
                   </motion.button>
                 </motion.div>
               );
@@ -396,16 +396,16 @@ export const BudgetsGoalsView: React.FC<BudgetsGoalsViewProps> = ({
             className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-cyan-500/30 w-full max-w-md p-6 space-y-4 glow-cyan"
           >
             <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 font-mono">
-              // INITIALIZE SAVINGS ACCUMULATOR
+              Add a New Savings Goal
             </h3>
             <form onSubmit={handleCreateGoal} className="space-y-3">
               <div>
                 <label className="block text-xs font-mono font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                  GOAL TITLE
+                  WHAT ARE YOU SAVING FOR?
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g., Goa Vacation, Tech Upgrade, Emergency Reserve"
+                  placeholder="e.g., Vacation trip, New Phone, Emergency Fund, Laptop"
                   value={goalTitle}
                   onChange={(e) => setGoalTitle(e.target.value)}
                   required
@@ -415,7 +415,7 @@ export const BudgetsGoalsView: React.FC<BudgetsGoalsViewProps> = ({
 
               <div>
                 <label className="block text-xs font-mono font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                  TARGET CAPITAL ({currency})
+                  HOW MUCH DO YOU WANT TO SAVE? ({currency})
                 </label>
                 <input
                   type="number"
@@ -431,7 +431,7 @@ export const BudgetsGoalsView: React.FC<BudgetsGoalsViewProps> = ({
 
               <div>
                 <label className="block text-xs font-mono font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                  ALREADY DEPOSITED (OPTIONAL)
+                  MONEY ALREADY SAVED (OPTIONAL)
                 </label>
                 <input
                   type="number"
@@ -446,7 +446,7 @@ export const BudgetsGoalsView: React.FC<BudgetsGoalsViewProps> = ({
 
               <div>
                 <label className="block text-xs font-mono font-semibold text-slate-700 dark:text-slate-300 mb-1">
-                  TARGET HORIZON DATE (OPTIONAL)
+                  TARGET DATE (OPTIONAL)
                 </label>
                 <input
                   type="date"
@@ -468,7 +468,7 @@ export const BudgetsGoalsView: React.FC<BudgetsGoalsViewProps> = ({
                   type="submit"
                   className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-mono font-bold rounded-xl shadow-md glow-emerald"
                 >
-                  INITIALIZE
+                  Save Goal
                 </button>
               </div>
             </form>
@@ -485,7 +485,7 @@ export const BudgetsGoalsView: React.FC<BudgetsGoalsViewProps> = ({
             className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-cyan-500/30 w-full max-w-sm p-6 space-y-4 glow-cyan"
           >
             <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 font-mono">
-              // DEPOSIT CAPITAL
+              Add Money to Goal
             </h3>
             <form onSubmit={handleDepositToGoal} className="space-y-3">
               <div>
@@ -516,7 +516,7 @@ export const BudgetsGoalsView: React.FC<BudgetsGoalsViewProps> = ({
                   type="submit"
                   className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-mono font-bold rounded-xl shadow-md glow-cyan"
                 >
-                  CONFIRM DEPOSIT
+                  Add Money
                 </button>
               </div>
             </form>

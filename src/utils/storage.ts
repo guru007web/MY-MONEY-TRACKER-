@@ -154,16 +154,7 @@ export function saveIncomes(incomes: Transaction[]): void {
 export function loadBudgets(): CategoryBudget[] {
   try {
     const raw = localStorage.getItem(BUDGETS_STORAGE_KEY);
-    if (!raw) {
-      return [
-        { category: 'Food & Dining', monthlyLimit: 8000 },
-        { category: 'Groceries', monthlyLimit: 6000 },
-        { category: 'Travel & Commute', monthlyLimit: 4000 },
-        { category: 'Shopping', monthlyLimit: 5000 },
-        { category: 'Entertainment', monthlyLimit: 3000 },
-        { category: 'Subscriptions', monthlyLimit: 1500 },
-      ];
-    }
+    if (!raw) return [];
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed) ? parsed : [];
   } catch {
@@ -182,31 +173,7 @@ export function saveBudgets(budgets: CategoryBudget[]): void {
 export function loadGoals(): SavingsGoal[] {
   try {
     const raw = localStorage.getItem(GOALS_STORAGE_KEY);
-    if (!raw) {
-      return [
-        {
-          id: 'goal-1',
-          title: 'Emergency Rainy Day Fund',
-          targetAmount: 50000,
-          currentAmount: 28500,
-          targetDate: '2026-12-31',
-        },
-        {
-          id: 'goal-2',
-          title: 'New Laptop / Tech Upgrade',
-          targetAmount: 85000,
-          currentAmount: 42000,
-          targetDate: '2026-10-15',
-        },
-        {
-          id: 'goal-3',
-          title: 'Goa Holiday Trip',
-          targetAmount: 25000,
-          currentAmount: 18000,
-          targetDate: '2026-12-20',
-        },
-      ];
-    }
+    if (!raw) return [];
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed) ? parsed : [];
   } catch {
@@ -219,6 +186,17 @@ export function saveGoals(goals: SavingsGoal[]): void {
     localStorage.setItem(GOALS_STORAGE_KEY, JSON.stringify(goals));
   } catch (err) {
     console.error('Error saving goals:', err);
+  }
+}
+
+export function clearAllStorage(): void {
+  try {
+    localStorage.removeItem(EXPENSE_STORAGE_KEY);
+    localStorage.removeItem(INCOME_STORAGE_KEY);
+    localStorage.removeItem(BUDGETS_STORAGE_KEY);
+    localStorage.removeItem(GOALS_STORAGE_KEY);
+  } catch (err) {
+    console.error('Error clearing all storage:', err);
   }
 }
 

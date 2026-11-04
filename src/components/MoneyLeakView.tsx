@@ -15,12 +15,11 @@ import {
   Tv,
   Calendar,
   Layers,
-  Radar,
-  Radio,
   Crosshair,
-  Activity,
+  Radio,
   ArrowRight,
   Flame,
+  HelpCircle,
 } from 'lucide-react';
 
 interface MoneyLeakViewProps {
@@ -81,9 +80,7 @@ export const MoneyLeakView: React.FC<MoneyLeakViewProps> = ({
 
   // Coordinates for radar blips based on leaks
   const radarBlips = analysis.leaks.map((leak, idx) => {
-    // Generate deterministic angles for visual radar placement
     const angle = (idx * (360 / Math.max(1, analysis.leaks.length)) + 45) * (Math.PI / 180);
-    // Severity determines distance from center: High leaks closer to perimeter
     const dist = leak.severity === 'high' ? 82 : leak.severity === 'medium' ? 60 : 38;
     const x = 110 + Math.cos(angle) * dist;
     const y = 110 + Math.sin(angle) * dist;
@@ -92,75 +89,64 @@ export const MoneyLeakView: React.FC<MoneyLeakViewProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* Futuristic Header with HUD badge */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-cyan-500/20 dark:border-cyan-500/10 pb-4">
+      {/* Friendly Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800/80 pb-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 dark:bg-cyan-950/60 text-cyan-500 dark:text-cyan-400 border border-cyan-500/30 text-[11px] font-mono tracking-wider uppercase font-semibold">
-              <Radio className="w-3.5 h-3.5 animate-pulse text-cyan-400" />
-              <span>RADAR SCANNER ACTIVE</span>
-            </span>
-            <span className="text-xs text-slate-400 dark:text-slate-500 font-mono">
-              FREQ: 2.4 GHz
+            <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 dark:bg-cyan-950/60 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 text-xs font-semibold">
+              <Radio className="w-3.5 h-3.5 animate-pulse text-cyan-500" />
+              <span>Leak Radar Active</span>
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight mt-1.5 flex items-center gap-3">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight mt-1.5 flex items-center gap-2">
             <span>Money Leak Detector</span>
-            <span className="text-xs px-2.5 py-0.5 rounded-lg bg-indigo-500/10 text-indigo-500 dark:text-indigo-400 border border-indigo-500/20 font-mono">
-              HUD v2.4
-            </span>
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
-            Real-time acoustic sonar detecting cashflow slippage, micro-drains, and recurring subscriptions.
+            Discover where your money is quietly disappearing — small daily snacks, unused subscriptions, or weekend splurges.
           </p>
         </div>
 
         {/* Live Leak Counter Badge */}
-        <div className="flex items-center gap-2 p-2 bg-slate-900 text-white rounded-xl border border-cyan-500/30 glow-cyan">
+        <div className="flex items-center gap-2.5 p-2 bg-slate-900 text-white rounded-xl border border-cyan-500/30 shadow-md">
           <div className="p-2 rounded-lg bg-cyan-500/20 text-cyan-400">
             <Crosshair className="w-5 h-5 animate-spin" style={{ animationDuration: '8s' }} />
           </div>
           <div className="pr-2">
-            <span className="text-[10px] text-cyan-400 uppercase tracking-widest font-mono block">
-              Targets Locked
+            <span className="text-[10px] text-cyan-400 uppercase tracking-wider block font-semibold">
+              Leaks Found
             </span>
-            <span className="text-sm font-bold font-mono">
-              {analysis.leaks.length} LEAKS DETECTED
+            <span className="text-sm font-bold">
+              {analysis.leaks.length === 0 ? 'All Clear' : `${analysis.leaks.length} Things to Fix`}
             </span>
           </div>
         </div>
       </div>
 
-      {/* Cybernetic Radar & Health Score Section */}
+      {/* Radar & Health Score Section */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-        {/* RADAR VISUAL HUD (5 Cols) */}
-        <div className="lg:col-span-5 p-6 rounded-2xl bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 text-cyan-400 border border-cyan-500/30 shadow-2xl relative overflow-hidden flex flex-col items-center justify-center glow-cyan">
-          {/* Subtle grid background */}
+        {/* RADAR VISUAL (5 Cols) */}
+        <div className="lg:col-span-5 p-6 rounded-2xl bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 text-cyan-400 border border-cyan-500/30 shadow-2xl relative overflow-hidden flex flex-col items-center justify-center">
           <div className="absolute inset-0 bg-cyber-grid opacity-20 pointer-events-none" />
 
           {/* Radar Header */}
-          <div className="w-full flex items-center justify-between text-[11px] font-mono text-cyan-400/70 mb-2 relative z-10">
-            <span className="flex items-center gap-1">
-              <Crosshair className="w-3 h-3 text-cyan-400" /> SONAR SCANNER
+          <div className="w-full flex items-center justify-between text-xs text-cyan-400/80 mb-2 relative z-10 font-semibold">
+            <span className="flex items-center gap-1.5">
+              <Crosshair className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Spending Radar</span>
             </span>
-            <span className="tabular-nums">SECTOR 01 // 360°</span>
+            <span className="text-[11px] text-slate-400">Live Scanner</span>
           </div>
 
           {/* SVG Radar Visual */}
           <div className="relative w-56 h-56 my-2 shrink-0">
-            {/* Concentric Radar Rings */}
             <svg viewBox="0 0 220 220" className="w-full h-full">
-              {/* Outer Glow Ring */}
               <circle cx="110" cy="110" r="100" fill="none" stroke="#06b6d4" strokeWidth="1" strokeOpacity="0.4" />
               <circle cx="110" cy="110" r="75" fill="none" stroke="#06b6d4" strokeWidth="1" strokeDasharray="3 3" strokeOpacity="0.3" />
               <circle cx="110" cy="110" r="50" fill="none" stroke="#06b6d4" strokeWidth="1" strokeOpacity="0.3" />
               <circle cx="110" cy="110" r="25" fill="none" stroke="#06b6d4" strokeWidth="1" strokeDasharray="2 2" strokeOpacity="0.3" />
 
-              {/* Crosshairs */}
               <line x1="10" y1="110" x2="210" y2="110" stroke="#06b6d4" strokeWidth="0.7" strokeOpacity="0.3" />
               <line x1="110" y1="10" x2="110" y2="210" stroke="#06b6d4" strokeWidth="0.7" strokeOpacity="0.3" />
-              <line x1="39" y1="39" x2="181" y2="181" stroke="#06b6d4" strokeWidth="0.5" strokeOpacity="0.15" />
-              <line x1="181" y1="39" x2="39" y2="181" stroke="#06b6d4" strokeWidth="0.5" strokeOpacity="0.15" />
 
               {/* Rotating Sweep Beam */}
               <g className="animate-radar-sweep">
@@ -177,11 +163,11 @@ export const MoneyLeakView: React.FC<MoneyLeakViewProps> = ({
                 <line x1="110" y1="110" x2="110" y2="10" stroke="#22d3ee" strokeWidth="1.5" />
               </g>
 
-              {/* Center Beacon */}
+              {/* Center Dot */}
               <circle cx="110" cy="110" r="4" fill="#22d3ee" className="animate-ping" />
               <circle cx="110" cy="110" r="3" fill="#ffffff" />
 
-              {/* Radar Blips (Targets) */}
+              {/* Radar Blips */}
               {radarBlips.map((blip) => {
                 const isSelected = activeLeakId === blip.id;
                 const blipColor = blip.severity === 'high' ? '#f43f5e' : blip.severity === 'medium' ? '#fbbf24' : '#38bdf8';
@@ -192,7 +178,6 @@ export const MoneyLeakView: React.FC<MoneyLeakViewProps> = ({
                     className="cursor-pointer group"
                     onClick={() => setActiveLeakId(isSelected ? null : blip.id)}
                   >
-                    {/* Pulsing ring */}
                     <circle
                       cx={blip.x}
                       cy={blip.y}
@@ -202,13 +187,11 @@ export const MoneyLeakView: React.FC<MoneyLeakViewProps> = ({
                       strokeWidth="1.5"
                       className="animate-pulse-ring"
                     />
-                    {/* Blip Dot */}
                     <circle
                       cx={blip.x}
                       cy={blip.y}
                       r={isSelected ? 5 : 3.5}
                       fill={blipColor}
-                      className="transition-all duration-150"
                     />
                   </g>
                 );
@@ -216,45 +199,44 @@ export const MoneyLeakView: React.FC<MoneyLeakViewProps> = ({
             </svg>
           </div>
 
-          {/* Interactive Radar Legend */}
-          <div className="w-full flex items-center justify-around text-[10px] font-mono border-t border-cyan-500/20 pt-2.5 mt-1">
+          {/* Simple Radar Legend */}
+          <div className="w-full flex items-center justify-around text-xs border-t border-cyan-500/20 pt-2.5 mt-1 font-medium">
             <span className="flex items-center gap-1.5 text-rose-400">
-              <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" /> High Drain
+              <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" /> Big Leak
             </span>
             <span className="flex items-center gap-1.5 text-amber-400">
-              <span className="w-2 h-2 rounded-full bg-amber-400" /> Moderate
+              <span className="w-2 h-2 rounded-full bg-amber-400" /> Medium Leak
             </span>
             <span className="flex items-center gap-1.5 text-cyan-300">
-              <span className="w-2 h-2 rounded-full bg-cyan-400" /> Watchlist
+              <span className="w-2 h-2 rounded-full bg-cyan-400" /> Watch Out
             </span>
           </div>
         </div>
 
-        {/* HEALTH METRICS & TELEMETRY GAUGES (7 Cols) */}
+        {/* HEALTH METRICS & SCORE (7 Cols) */}
         <div className="lg:col-span-7 flex flex-col justify-between gap-4">
-          {/* Main Health Card */}
           <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs flex-1 flex flex-col justify-between">
             <div className="flex items-start justify-between">
               <div>
-                <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                  SYSTEM TELEMETRY
+                <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                  Your Financial Health
                 </span>
                 <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 mt-0.5">
-                  Financial Integrity Index
+                  Spending Score
                 </h2>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                  Overall solvency and leak-resistance evaluation.
+                  How well you are managing your spending and saving money.
                 </p>
               </div>
 
               {/* Big Score Tag */}
               <div className="text-right">
-                <span className="text-3xl sm:text-4xl font-extrabold font-mono tracking-tight tabular-nums text-cyan-600 dark:text-cyan-400">
+                <span className="text-3xl sm:text-4xl font-extrabold tracking-tight tabular-nums text-cyan-600 dark:text-cyan-400">
                   {analysis.spendingHealthScore}
                   <span className="text-base text-slate-400 font-normal">/100</span>
                 </span>
-                <span className="block text-[11px] font-semibold text-slate-500 dark:text-slate-400">
-                  Status: {analysis.scoreLabel}
+                <span className="block text-xs font-semibold text-slate-600 dark:text-slate-300">
+                  {analysis.scoreLabel}
                 </span>
               </div>
             </div>
@@ -268,68 +250,68 @@ export const MoneyLeakView: React.FC<MoneyLeakViewProps> = ({
                   transition={{ duration: 1, ease: 'easeOut' }}
                   className={`h-full rounded-full ${
                     analysis.spendingHealthScore >= 75
-                      ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 glow-emerald'
+                      ? 'bg-gradient-to-r from-emerald-500 to-cyan-500'
                       : analysis.spendingHealthScore >= 55
                       ? 'bg-gradient-to-r from-amber-500 to-orange-500'
-                      : 'bg-gradient-to-r from-rose-600 to-rose-500 glow-rose'
+                      : 'bg-gradient-to-r from-rose-600 to-rose-500'
                   }`}
                 />
               </div>
             </div>
 
-            {/* 3 Metric HUD Pods */}
+            {/* 3 Metric Pods */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
-                <span className="text-[10px] font-mono uppercase text-slate-400">
-                  Phantom Spends
+              <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                  Small Daily Spends
                 </span>
-                <p className="text-base font-bold text-slate-900 dark:text-slate-100 tabular-nums font-mono mt-0.5">
+                <p className="text-base font-bold text-slate-900 dark:text-slate-100 tabular-nums mt-0.5">
                   {formatCurrency(analysis.microSpendSummary.totalAmount, currency)}
                 </p>
-                <span className="text-[10px] text-slate-500">
-                  {analysis.microSpendSummary.count} micro-charges
+                <span className="text-[11px] text-slate-400">
+                  {analysis.microSpendSummary.count} small buys
                 </span>
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
-                <span className="text-[10px] font-mono uppercase text-slate-400">
-                  Wants Ratio
+              <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                  Fun & Shopping Share
                 </span>
-                <p className="text-base font-bold text-slate-900 dark:text-slate-100 tabular-nums font-mono mt-0.5">
+                <p className="text-base font-bold text-slate-900 dark:text-slate-100 tabular-nums mt-0.5">
                   {analysis.needsVsWants.wantsPercentage.toFixed(1)}%
                 </p>
-                <span className="text-[10px] text-slate-500">Target: &le; 30%</span>
+                <span className="text-[11px] text-slate-400">Ideal: Around 30%</span>
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
-                <span className="text-[10px] font-mono uppercase text-slate-400">
-                  Weekend Multiplier
+              <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                  Weekend Spending
                 </span>
-                <p className="text-base font-bold text-slate-900 dark:text-slate-100 tabular-nums font-mono mt-0.5">
+                <p className="text-base font-bold text-slate-900 dark:text-slate-100 tabular-nums mt-0.5">
                   {analysis.weekendVsWeekday.weekendRatio}x
                 </p>
-                <span className="text-[10px] text-slate-500">vs weekday average</span>
+                <span className="text-[11px] text-slate-400">Compared to weekdays</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* 50/30/20 Rule Futuristic Gauge */}
+      {/* 50/30/20 Rule Box */}
       <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-3">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-sm font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <Layers className="w-4 h-4 text-cyan-500" />
-              <span>50/30/20 Budget Matrix</span>
+              <span>The 50/30/20 Rule (A simple guide for your money)</span>
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Needs (50%) · Wants (30%) · Retained Savings (20%)
+              50% for Needs (Rent, groceries, bills) · 30% for Wants (Eating out, shopping) · 20% for Savings
             </p>
           </div>
         </div>
 
-        {/* Futuristic Multi-segment Bar */}
+        {/* Stacked Progress Bar */}
         <div className="w-full h-3.5 rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800 flex gap-0.5 p-0.5 border border-slate-200 dark:border-slate-700">
           <motion.div
             initial={{ width: 0 }}
@@ -355,23 +337,23 @@ export const MoneyLeakView: React.FC<MoneyLeakViewProps> = ({
         </div>
 
         {/* Legend */}
-        <div className="grid grid-cols-3 gap-2 text-xs pt-1">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs pt-1">
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded bg-cyan-500 shrink-0" />
             <span className="text-slate-600 dark:text-slate-300 font-medium">
-              Needs: {analysis.needsVsWants.needsPercentage.toFixed(1)}% ({formatCurrency(analysis.needsVsWants.needsAmount, currency)})
+              Essentials (Needs): {analysis.needsVsWants.needsPercentage.toFixed(1)}% ({formatCurrency(analysis.needsVsWants.needsAmount, currency)})
             </span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded bg-rose-500 shrink-0" />
             <span className="text-slate-600 dark:text-slate-300 font-medium">
-              Wants: {analysis.needsVsWants.wantsPercentage.toFixed(1)}% ({formatCurrency(analysis.needsVsWants.wantsAmount, currency)})
+              Fun & Lifestyle (Wants): {analysis.needsVsWants.wantsPercentage.toFixed(1)}% ({formatCurrency(analysis.needsVsWants.wantsAmount, currency)})
             </span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded bg-emerald-500 shrink-0" />
             <span className="text-slate-600 dark:text-slate-300 font-medium">
-              Savings: {analysis.needsVsWants.savingsPercentage.toFixed(1)}% ({formatCurrency(analysis.needsVsWants.savingsAmount, currency)})
+              Saved in Pocket: {analysis.needsVsWants.savingsPercentage.toFixed(1)}% ({formatCurrency(analysis.needsVsWants.savingsAmount, currency)})
             </span>
           </div>
         </div>
@@ -382,10 +364,10 @@ export const MoneyLeakView: React.FC<MoneyLeakViewProps> = ({
         <div className="flex items-center justify-between">
           <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
             <Flame className="w-5 h-5 text-rose-500" />
-            <span>Detected Leak Vectors</span>
+            <span>Where Your Money is Slipping Away</span>
           </h2>
-          <span className="text-xs font-mono text-slate-400">
-            Click a card or radar blip to lock target
+          <span className="text-xs text-slate-400">
+            Click any card to highlight it on the radar
           </span>
         </div>
 
@@ -393,10 +375,10 @@ export const MoneyLeakView: React.FC<MoneyLeakViewProps> = ({
           <div className="p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-center">
             <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto mb-2" />
             <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
-              Radar Clear — Zero Critical Leaks
+              No Major Leaks Found!
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 max-w-md mx-auto mt-1">
-              Your spending is operating within optimal margins. Continue logging transactions daily to maintain telemetry.
+              You are doing a great job managing your money. Keep adding your expenses to maintain this healthy habit!
             </p>
           </div>
         ) : (
@@ -413,7 +395,7 @@ export const MoneyLeakView: React.FC<MoneyLeakViewProps> = ({
                   onClick={() => setActiveLeakId(isSelected ? null : leak.id)}
                   className={`p-5 rounded-2xl border transition-all cursor-pointer relative overflow-hidden flex flex-col justify-between space-y-4 ${
                     isSelected
-                      ? 'border-cyan-500 bg-cyan-950/20 shadow-lg glow-cyan ring-1 ring-cyan-500/50'
+                      ? 'border-cyan-500 bg-cyan-950/20 shadow-lg ring-1 ring-cyan-500/50'
                       : 'bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 hover:border-cyan-500/40'
                   }`}
                 >
@@ -421,16 +403,16 @@ export const MoneyLeakView: React.FC<MoneyLeakViewProps> = ({
                     {/* Header */}
                     <div className="flex items-center justify-between gap-2">
                       <span
-                        className={`text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-md ${
+                        className={`text-xs font-semibold px-2 py-0.5 rounded-md ${
                           isHigh
                             ? 'bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-400 border border-rose-500/30'
                             : 'bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 border border-amber-500/30'
                         }`}
                       >
-                        {leak.severity.toUpperCase()} ALERT
+                        {isHigh ? '⚠️ Big Leak' : '⚡ Medium Leak'}
                       </span>
-                      <span className="text-xs font-mono text-slate-400">
-                        // {leak.category}
+                      <span className="text-xs text-slate-400 font-medium">
+                        {leak.category}
                       </span>
                     </div>
 
@@ -442,18 +424,18 @@ export const MoneyLeakView: React.FC<MoneyLeakViewProps> = ({
                     </p>
                   </div>
 
-                  {/* Impact Bar */}
+                  {/* Impact */}
                   <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80 space-y-2 text-xs">
                     <div className="flex items-center justify-between">
-                      <span className="text-slate-500 dark:text-slate-400 font-mono">Monthly Run-Rate:</span>
-                      <span className="font-bold text-rose-600 dark:text-rose-400 tabular-nums font-mono">
-                        {formatCurrency(leak.monthlyImpact, currency)}
+                      <span className="text-slate-500 dark:text-slate-400">Monthly Cost:</span>
+                      <span className="font-bold text-rose-600 dark:text-rose-400 tabular-nums">
+                        {formatCurrency(leak.monthlyImpact, currency)} / month
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-slate-500 dark:text-slate-400 font-mono">Annualized Waste:</span>
-                      <span className="font-bold text-slate-900 dark:text-slate-100 tabular-nums font-mono">
-                        {formatCurrency(leak.yearlyImpact, currency)}
+                      <span className="text-slate-500 dark:text-slate-400">Yearly Cost:</span>
+                      <span className="font-bold text-slate-900 dark:text-slate-100 tabular-nums">
+                        {formatCurrency(leak.yearlyImpact, currency)} / year
                       </span>
                     </div>
 
@@ -469,9 +451,8 @@ export const MoneyLeakView: React.FC<MoneyLeakViewProps> = ({
         )}
       </div>
 
-      {/* Futuristic "What-If" Quantum Savings Engine */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 text-white shadow-2xl border border-indigo-500/30 glow-indigo space-y-6 relative overflow-hidden">
-        {/* Futuristic accent grid */}
+      {/* Simple "What-If" Savings Calculator */}
+      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 text-white shadow-2xl border border-indigo-500/30 space-y-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-cyber-grid opacity-15 pointer-events-none" />
 
         <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
@@ -479,15 +460,15 @@ export const MoneyLeakView: React.FC<MoneyLeakViewProps> = ({
             <div className="flex items-center gap-2">
               <Sliders className="w-5 h-5 text-cyan-400" />
               <h2 className="text-base sm:text-lg font-bold tracking-tight">
-                Quantum Savings Simulator
+                Simple Savings Calculator
               </h2>
             </div>
             <p className="text-xs text-indigo-200/80 mt-0.5">
-              Tune leak throttling parameters below to see compound capital recaptured in real time.
+              Move the sliders below to see how much money you can easily save by making small everyday tweaks!
             </p>
           </div>
-          <span className="text-[11px] px-3 py-1 bg-cyan-500/20 text-cyan-300 rounded-full font-mono border border-cyan-500/40">
-            SIMULATION ENGINE v3.1
+          <span className="text-xs px-3 py-1 bg-cyan-500/20 text-cyan-300 rounded-full font-semibold border border-cyan-500/40">
+            Interactive Calculator
           </span>
         </div>
 
@@ -499,9 +480,9 @@ export const MoneyLeakView: React.FC<MoneyLeakViewProps> = ({
               <div className="flex items-center justify-between text-xs">
                 <span className="font-semibold text-cyan-200 flex items-center gap-1.5">
                   <Coffee className="w-3.5 h-3.5 text-amber-400" />
-                  Throttle Dining & Food Delivery:
+                  Cut Food Delivery & Eating Out by:
                 </span>
-                <span className="font-mono text-cyan-300 font-bold tabular-nums">
+                <span className="text-cyan-300 font-bold tabular-nums">
                   {cutDiningPercent}% (Save {formatCurrency(diningSaved, currency)}/mo)
                 </span>
               </div>
@@ -521,9 +502,9 @@ export const MoneyLeakView: React.FC<MoneyLeakViewProps> = ({
               <div className="flex items-center justify-between text-xs">
                 <span className="font-semibold text-cyan-200 flex items-center gap-1.5">
                   <Zap className="w-3.5 h-3.5 text-amber-400" />
-                  Filter Micro-Spends & Impulse Snacks:
+                  Reduce Daily Snacks & Quick Chai by:
                 </span>
-                <span className="font-mono text-cyan-300 font-bold tabular-nums">
+                <span className="text-cyan-300 font-bold tabular-nums">
                   {cutMicroPercent}% (Save {formatCurrency(microSaved, currency)}/mo)
                 </span>
               </div>
@@ -543,9 +524,9 @@ export const MoneyLeakView: React.FC<MoneyLeakViewProps> = ({
               <div className="flex items-center justify-between text-xs">
                 <span className="font-semibold text-cyan-200 flex items-center gap-1.5">
                   <Calendar className="w-3.5 h-3.5 text-amber-400" />
-                  Cap Weekend Outgoing Spikes:
+                  Cut Weekend Extra Spending by:
                 </span>
-                <span className="font-mono text-cyan-300 font-bold tabular-nums">
+                <span className="text-cyan-300 font-bold tabular-nums">
                   {cutWeekendPercent}% (Save {formatCurrency(weekendSaved, currency)}/mo)
                 </span>
               </div>
@@ -564,7 +545,7 @@ export const MoneyLeakView: React.FC<MoneyLeakViewProps> = ({
             <label className="flex items-center justify-between p-4 rounded-2xl bg-white/5 border border-white/10 text-xs cursor-pointer hover:bg-white/10 transition-colors backdrop-blur-xs">
               <div className="flex items-center gap-2">
                 <Tv className="w-4 h-4 text-rose-400" />
-                <span className="font-semibold text-slate-200">Deactivate 1 dormant subscription / gym membership</span>
+                <span className="font-semibold text-slate-200">Cancel 1 unused app or streaming service</span>
               </div>
               <input
                 type="checkbox"
@@ -575,24 +556,24 @@ export const MoneyLeakView: React.FC<MoneyLeakViewProps> = ({
             </label>
           </div>
 
-          {/* Results Holographic Pod */}
-          <div className="p-6 sm:p-7 rounded-2xl bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-md border border-cyan-400/30 space-y-5 glow-cyan">
-            <span className="text-[11px] uppercase tracking-wider text-cyan-300 font-mono block">
-              // RECAPTURED CAPITAL PROJECTION
+          {/* Results Outcome Pod */}
+          <div className="p-6 sm:p-7 rounded-2xl bg-gradient-to-b from-white/10 to-white/5 backdrop-blur-md border border-cyan-400/30 space-y-5">
+            <span className="text-xs uppercase tracking-wider text-cyan-300 font-bold block">
+              💰 Money You Can Save
             </span>
 
             <div className="space-y-4">
               <div>
-                <span className="text-xs text-slate-300">Net Monthly Recovery:</span>
-                <h3 className="text-3xl sm:text-4xl font-extrabold text-cyan-300 font-mono tabular-nums tracking-tight">
+                <span className="text-xs text-slate-300">Extra Savings Every Month:</span>
+                <h3 className="text-3xl sm:text-4xl font-extrabold text-cyan-300 tabular-nums tracking-tight">
                   +{formatCurrency(totalMonthlyPotentialSavings, currency)}
-                  <span className="text-xs font-normal text-slate-300 font-sans"> / mo</span>
+                  <span className="text-sm font-normal text-slate-300"> / month</span>
                 </h3>
               </div>
 
               <div className="pt-3 border-t border-white/10">
-                <span className="text-xs text-slate-300">12-Month Cumulative Gain:</span>
-                <p className="text-xl font-bold text-white font-mono tabular-nums">
+                <span className="text-xs text-slate-300">Extra Savings in 1 Year:</span>
+                <p className="text-xl font-bold text-white tabular-nums">
                   +{formatCurrency(totalYearlyPotentialSavings, currency)}
                 </p>
               </div>
@@ -600,17 +581,17 @@ export const MoneyLeakView: React.FC<MoneyLeakViewProps> = ({
               <div className="pt-3 border-t border-white/10">
                 <span className="text-xs text-amber-300 font-semibold flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                  5-Year Net Worth Impact (at 10% compound interest):
+                  What This Can Grow to in 5 Years (with 10% interest):
                 </span>
-                <p className="text-2xl sm:text-3xl font-black text-amber-300 font-mono tabular-nums mt-0.5">
+                <p className="text-2xl sm:text-3xl font-black text-amber-300 tabular-nums mt-0.5">
                   {formatCurrency(futureValue5Years, currency)}
                 </p>
-                <p className="text-[11px] text-slate-300/80 mt-1.5">
-                  Plugging these three behavioral leaks redirects{' '}
-                  <span className="text-cyan-300 font-bold font-mono">
+                <p className="text-xs text-slate-300 mt-1.5 leading-relaxed">
+                  💡 By simply making these small everyday adjustments, you can easily save over{' '}
+                  <span className="text-cyan-300 font-bold">
                     {formatCurrency(futureValue5Years, currency)}
                   </span>{' '}
-                  straight into your personal wealth fund.
+                  to buy a new vehicle, go on family vacations, or build an emergency fund!
                 </p>
               </div>
             </div>
@@ -623,10 +604,10 @@ export const MoneyLeakView: React.FC<MoneyLeakViewProps> = ({
         <div>
           <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
             <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-            <span>Money Leak Prevention Directives</span>
+            <span>Easy Habits to Stop Money Leaks</span>
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            Check off protocol actions as you execute them this week
+            Simple steps anyone can try this week
           </p>
         </div>
 
@@ -634,23 +615,23 @@ export const MoneyLeakView: React.FC<MoneyLeakViewProps> = ({
           {[
             {
               id: 'act-1',
-              title: 'Review Active Digital Subscriptions',
-              desc: 'Check Apple ID or Google Play subscriptions and cancel at least 1 dormant app or recurring subscription.',
+              title: 'Check App Subscriptions on Your Phone',
+              desc: 'Open Google Play or Apple App Store and cancel any unused music, OTT, or gym apps.',
             },
             {
               id: 'act-2',
-              title: 'Set Dedicated UPI Daily Pocket Cap',
-              desc: 'Maintain a secondary zero-balance UPI account for impulsive quick coffee and snack QR scans.',
+              title: 'Keep a Small Daily UPI / Cash Budget',
+              desc: 'Set a daily budget for chai, snacks, and auto rides so you don’t overspend on small items.',
             },
             {
               id: 'act-3',
-              title: 'Activate 48-Hour Cart Delay Protocol',
-              desc: 'Enforce a 48-hour cooling-off window before authorizing non-essential online shopping carts.',
+              title: 'Wait 24 Hours Before Online Shopping',
+              desc: 'Keep items in your cart for 24 hours. If you still need them tomorrow, then buy them!',
             },
             {
               id: 'act-4',
-              title: 'Designate 2 "Zero-Spend" Days This Week',
-              desc: 'Prepare home-brewed beverages and packed meals on Tuesdays and Thursdays to halt micro-slippage.',
+              title: 'Try 1 or 2 "No-Spend" Days This Week',
+              desc: 'Pack homemade lunch and snacks on Tuesdays or Thursdays to save extra pocket money.',
             },
           ].map((item) => {
             const isDone = completedActions[item.id];
